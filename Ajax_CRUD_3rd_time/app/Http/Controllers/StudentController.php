@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
    public function index(){
-       return view('home', ['students' => Student::orderBy('id', 'desc')->get()]);
+       $students = Student::latest()->paginate(4);
+       return view('home', compact('students'));
    }
 
    public function addStudent(Request $request){
@@ -70,4 +71,25 @@ class StudentController extends Controller
             'status' => 'success',
         ]);
    }
+
+   public function pagination(Request $request){
+       $students = Student::latest()->paginate(4);
+       return view('home_student', compact('students'));
+   }
+
+   public function searchStudent(Request $request){
+    $students = Student::where('name', 'like', '%'.$request->search_string.'%')
+        ->orWhere('course', 'like', '%'.$request->search_string.'%')
+        ->orderBy('id', 'desc')->paginate(4);
+
+       if($students->count() >= 1){
+           return view('home_student', compact('students'));
+       }
+       else{
+           return response()->json([
+               'status' => 'Nothing_found',
+           ]);
+       }
+   }
+
 }

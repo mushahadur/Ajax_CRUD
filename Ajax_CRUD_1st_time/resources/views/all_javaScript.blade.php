@@ -38,34 +38,38 @@
         });
 
         // Show Update info New
-        {{--$(document).on('click', '.edit_student_form', function (e){--}}
-        {{--    e.preventDefault();--}}
-        {{--    let std_id = $(this).data('stdId');--}}
 
-        {{--    $.ajax({--}}
-        {{--        url:"{{route('editStudent')}}",--}}
-        {{--        method:"POST",--}}
-        {{--        data: {student_id:std_id},--}}
-        {{--        success:function(res){--}}
-        {{--            if(res.status == 'success'){--}}
-        {{--                $('#editForm')[0].reset();--}}
-        {{--                $('.table').load(location.href+' .table');--}}
-        {{--            }--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--});--}}
+        $(document).on('click', '.edit_student_form', function (e){
+            e.preventDefault();
+
+            let std_id = $(this).attr('stdId');
+            let page = $(this).attr('href').split('page=')[1];
+            alert(std_id);
+
+            $.ajax({
+                url:"{{route('editStudent')}}",
+                method:"POST",
+                data: {student_id:std_id},
+                success:function(res){
+                    if(res.status == 'success'){
+                        $('#editForm')[0].reset();
+                        $('.table').load(location.href+' .table');
+                    }
+                }
+            });
+        });
 
         // Show Update info
-        $(document).on('click', '.edit_student_form', function (e){
-            let id = $(this).data('id');
-            let name = $(this).data('name');
-            let email = $(this).data('email');
-
-            $('#edit_id').val(id);
-            $('#edit_name').val(name);
-            $('#edit_email').val(email);
-
-        });
+        // $(document).on('click', '.edit_student_form', function (e){
+        //     let id = $(this).data('id');
+        //     let name = $(this).data('name');
+        //     let email = $(this).data('email');
+        //
+        //     $('#edit_id').val(id);
+        //     $('#edit_name').val(name);
+        //     $('#edit_email').val(email);
+        //
+        // });
         //  Update Student info New
         //  Update Student info by Ajax
         $(document).on('click', '#btnUpdateSubmit', function (e){

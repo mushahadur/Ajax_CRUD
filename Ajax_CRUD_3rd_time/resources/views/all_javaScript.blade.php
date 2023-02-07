@@ -1,5 +1,6 @@
 
 <script src="{{asset('/')}}assets/js/bootstrap.bundle.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 <script>
     $.ajaxSetup({
         headers: {
@@ -23,6 +24,25 @@
                         $('#studentModal').modal('hide');
                         $('#my-form')[0].reset();
                         $('.table').load(location.href+' .table');
+                        Command: toastr["success"]("New Student Added.", "success")
+
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
                     }
                 }, error:function(err){
                     let error = err.responseJSON;
@@ -64,6 +84,25 @@
                         $('#editModal').modal('hide');
                         $('#editForm')[0].reset();
                         $('.table').load(location.href+' .table');
+                        Command: toastr["info"]("Update Student  Successfully !!!", "success")
+
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
                     }
                 }, error:function(err){
                     let error = err.responseJSON;
@@ -87,12 +126,63 @@
                     success:function(res){
                         if(res.status == 'success'){
                             $('.table').load(location.href+' .table');
+                            Command: toastr["warning"]("Student info deleted !", ". . . ")
+
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            }
                         }
                     }
                 });
             }
 
         });
+
+        //Pagination ---!!!!!!!
+        $(document).on('click', '.pagination a', function (e){
+            e.preventDefault();
+            let page = $(this).attr('href').split('page=')[1];
+            student(page)
+        });
+        function student(page){
+            $.ajax({
+                url:"/pagination/paginate-data?page="+page,
+                success:function (res){
+                    $(".table-data").html(res);
+                }
+            });
+        }
+
+        //Search function for student  --!!
+        $(document).on('keyup', function (e){
+            e.preventDefault();
+            let search_string =  $('#search').val();
+            $.ajax({
+                url:"{{route('searchStudent')}}",
+                method:"GET",
+                data:{search_string:search_string},
+                success:function (res){
+                    $(".table-data").html(res);
+                    if(res.status == 'Nothing_found'){
+                        $(".table-data").html('<span class="text-danger">'+'Search Nothing Found !😥😥'+'</span>');
+                    }
+                }
+            });
+        })
 
     });
 </script>

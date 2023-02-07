@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{asset('/')}}assets/css/all.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('/')}}assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
@@ -39,44 +40,52 @@
 <span id="output"></span>
 <section>
     <div class="container">
-        <h2 class="pt-3 text-center">This is All student Info</h2>
-        <hr/>
-        <table class="table table-bordered table-striped table-hover" id="student-table">
-            <thead>
-            <tr>
-                <th scope="col">SI NO</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Course</th>
-                <th scope="col">Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($students as $student)
-                <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td>{{$student->name}}</td>
-                    <td>{{$student->email}}</td>
-                    <td>{{$student->course}}</td>
-                    <td>
-                        <a href=""id="edit" class="btn btn-outline-success edit_student_form"
-                           data-bs-toggle="modal"
-                           data-bs-target="#editModal"
-                           data-id="{{$student->id}}"
-                           data-name = "{{$student->name}}"
-                           data-email = "{{$student->email}}"
-                           data-course = "{{$student->course}}"
-                        >
-                            <i class='fas fa-user-edit'></i>
-                        </a>
-                        <a  data-id ="{{$student->id}}" class="btn btn-outline-danger deleteStudent" >
-                            <i class="fa fa fa-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-md-10 mx-auto">
+                <h2 class="pt-3 text-center">This is All student Info</h2>
+                <input type="text" id="search"  name="search" class="my-3 form-control" placeholder="Search here.." />
+                <hr/>
+                <div class="table-data">
+                    <table class="table table-bordered table-striped table-hover" id="student-table">
+                        <thead>
+                        <tr>
+                            <th scope="col">SI NO</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Course</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($students as $student)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$student->name}}</td>
+                                <td>{{$student->email}}</td>
+                                <td>{{$student->course}}</td>
+                                <td>
+                                    <a href=""id="edit" class="btn btn-outline-success edit_student_form"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#editModal"
+                                       data-id="{{$student->id}}"
+                                       data-name = "{{$student->name}}"
+                                       data-email = "{{$student->email}}"
+                                       data-course = "{{$student->course}}"
+                                    >
+                                        <i class='fas fa-user-edit'></i>
+                                    </a>
+                                    <a  data-id ="{{$student->id}}" class="btn btn-outline-danger deleteStudent" >
+                                        <i class="fa fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    {{$students->links() }}
+                </div>
+            </div>
+        </div>
 
     </div>
 </section>
@@ -93,7 +102,7 @@
 @include('all_javaScript');
 <!-- All JavaScript  End -->
 
-
+{!! Toastr::message() !!}
 
 </body>
 </html>
